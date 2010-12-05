@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="SubTitle domain model ">
+    <Position X="1.505" Y="0.521" Height="0.583" Width="1.7" />
+  </Comment>
+  <Class Name="SubtitleChecker.Domain.Author">
+    <Position X="5.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\SubTitle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SubtitleChecker.Domain.Medium">
+    <Position X="1.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Domain\SubTitle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SubtitleChecker.Domain.Subtitle">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAIAAAACAAAgAA=</HashCode>
+      <FileName>Domain\SubTitle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SubtitleChecker.Domain.SubtitleCollection">
+    <Position X="3.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAACAAAQFAIgAAAAAAAAAgAAAAAAAAAAEAECAQ=</HashCode>
+      <FileName>Domain\SubTitle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Medium" />
+      <Property Name="Author" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_subtitles" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
