@@ -6,43 +6,71 @@ using SubtitleChecker.Domain;
 
 namespace SubtitleChecker.Parser
 {
-    internal enum State
-    {
-        BeginHeader,
-        Head,
-        DiscId,
-        DvdTitle,
-        CodePage,
-        Format,
-        Lang,
-        Title,
-        Original,
-        Author,
-        Web,
-        Info,
-        License,
-        EndHeader,
-        BeginSubtitle,
-        SubtitleStartTime,
-        Subtitle,
-        Failed,
-    }
-
     public class DvdSubtitleParser : ISubtitleParser
     {
-        private State _state = State.BeginHeader;
+        #region Enums
 
-        public SubtitleCollection Parse(Stream stream)
+        private enum State
         {
-            var reader = new StreamReader(stream);
-            var subtitles = ParseHeader(reader);
-            subtitles = ParseSubtitles(reader, subtitles);
-            return subtitles;
+            BeginHeader,
+            Head,
+            DiscId,
+            DvdTitle,
+            CodePage,
+            Format,
+            Lang,
+            Title,
+            Original,
+            Author,
+            Web,
+            Info,
+            License,
+            EndHeader,
+            BeginSubtitle,
+            SubtitleStartTime,
+            Subtitle,
+            Failed,
+        }
+
+        #endregion
+
+        #region Fields
+
+        private State _state = State.BeginHeader;
+        private Stream _stream;
+        private long _origin;
+
+        #endregion
+
+        #region Constructors 
+        
+        public DvdSubtitleParser(Stream stream)
+        {
+            if (stream == null) throw new InvalidDataException("Not a valid stream to parse from.");
+            _stream = stream;
+            _origin = _stream.Position;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void Parse(Video video)
+        {
+            if (video == null) return;
+            if (_stream.Position != _origin)
+            {
+                _stream.Seek(_origin, SeekOrigin.Begin);
+            }
+            var reader = new StreamReader(_stream);
+            ParseHeader(reader, video);
+            ParseSubtitles(reader, video.Subtitles);
         }
 
         private SubtitleCollection ParseSubtitles(StreamReader reader, SubtitleCollection subtitleCollection)
         {
             var subtitleLines = new List<string>();
+            var subtitles = 0;
             Subtitle previousSubtitle = null;
             var startTime = new TimeSpan();
             bool readNextLine = true;
@@ -93,12 +121,13 @@ namespace SubtitleChecker.Parser
                                     readNextLine = false;
                                     if (previousSubtitle != null)
                                     {
-                                        subtitleCollection.Add(new Subtitle(previousSubtitle.Offset, startTime - previousSubtitle.Offset, previousSubtitle.Text));
+                                        subtitleCollection.Add(new Subtitle(previousSubtitle.Number, previousSubtitle.Offset, startTime - previousSubtitle.Offset, previousSubtitle.Text));
                                         previousSubtitle = null;
                                     }
                                     if (subtitleLines.Count > 0)
                                     {
-                                        previousSubtitle = new Subtitle(startTime, new TimeSpan(), subtitleLines.ToArray());
+                                        subtitles++;
+                                        previousSubtitle = new Subtitle(subtitles, startTime, new TimeSpan(), subtitleLines.ToArray());
                                     }
                                     break;
                                 }
@@ -125,7 +154,7 @@ namespace SubtitleChecker.Parser
                         var timeFractions = line.Split(':');
                         if (timeFractions.Length == 4)
                         {
-                            if (TimeSpan.TryParse(string.Format("{0}:{1}:{2}.{3}", timeFractions[0], timeFractions[1], timeFractions[2], timeFractions[3]), CultureInfo.InvariantCulture, out startTime))
+                            if (TimeSpan.TryParse(string.Format("{0}:{1}:{2}.{3}", timeFractions[0], timeFractions[1], timeFractions[2], timeFractions[3]), out startTime))
                             {
                                 subtitleLines.Clear();
                                 _state = State.Subtitle;
@@ -140,7 +169,7 @@ namespace SubtitleChecker.Parser
             return true;
         }
 
-        private SubtitleCollection ParseHeader(StreamReader reader)
+        private void ParseHeader(StreamReader reader, Video video)
         {
             bool result = false;
             string discId = string.Empty;
@@ -218,7 +247,20 @@ namespace SubtitleChecker.Parser
                         break;
                 }
             }
-            return result ? new SubtitleCollection(new Author(author), new Medium(dvdTitle, discId, codePage), language, license, original, title, web, info, format) : null;
+            if (result)
+            {
+                video.Author.Name = author;
+                video.Medium.CodePage = codePage;
+                video.Medium.DiscId = discId;
+                video.Medium.DvdTitle = dvdTitle;
+                video.Subtitles.Language = language;
+                video.Subtitles.License = license;
+                video.Subtitles.Original = original;
+                video.Subtitles.Title = title;
+                video.Subtitles.Web = web;
+                video.Subtitles.Info = info;
+                video.Subtitles.Format = format;
+            }
         }
 
         private bool ParseHead(string line)
@@ -268,5 +310,7 @@ namespace SubtitleChecker.Parser
             readNextLine = true;
             return result;
         }
+
+        #endregion
     }
 }

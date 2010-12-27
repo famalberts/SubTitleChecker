@@ -8,6 +8,6 @@ namespace SubtitleChecker.Parser
 {
     interface ISubtitleParser
     {
-        Domain.SubtitleCollection Parse(Stream stream);
+        void Parse(Domain.Video video);
     }
 }

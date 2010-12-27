@@ -69,13 +69,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Author.cs" />
+    <Compile Include="Domain\Medium.cs" />
+    <Compile Include="Domain\Rules\BasicRules\UpperLowerCaseSubtitleRule.cs" />
+    <Compile Include="Domain\Rules\BasicRules\WordspacingSubtitleRule.cs" />
+    <Compile Include="Domain\Rules\SubtitleRules.cs" />
+    <Compile Include="Domain\Rules\IRule.cs" />
+    <Compile Include="Domain\Rules\ISubtitleRule.cs" />
+    <Compile Include="Domain\Rules\RuleValidationResult.cs" />
+    <Compile Include="Domain\Rules\TimingRules\HumanReadSubtitleSpeedRule.cs" />
     <Compile Include="Domain\Subtitle.cs" />
+    <Compile Include="Domain\SubtitleCollection.cs" />
+    <Compile Include="Domain\Video.cs" />
     <Compile Include="Parser\DvdSubtitleParser.cs" />
     <Compile Include="Parser\ISubtitleParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Domain\Rules\guidelines for subtitling.pdf" />
     <None Include="Domain\SubtitleModel.cd" />
     <None Include="SignKey.snk" />
   </ItemGroup>
@@ -101,6 +113,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
