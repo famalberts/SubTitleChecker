@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace SubtitleChecker.Domain.Rules.BasicRules
 {
@@ -48,7 +44,7 @@ namespace SubtitleChecker.Domain.Rules.BasicRules
             {
                 return null;
             }
-            return new RuleValidationResult(RuleDescription, string.Format("Words are not seperated with a single space character at line {0}, position {1}.", lineIndex, columnIndex), subtitle);
+            return new RuleValidationResult(RuleValidationResult.SeverityLevel.Warning, RuleDescription, string.Format("Seperate words with a single space character at line {0}, position {1}.", lineIndex, columnIndex), subtitle);
         }
 
         #endregion

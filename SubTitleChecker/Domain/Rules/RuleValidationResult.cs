@@ -10,7 +10,8 @@
         public enum SeverityLevel
         {
             Warning,
-            Error
+            Error,
+            Exception
         }
 
         #endregion

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SubtitleChecker.Domain.Rules.TimingRules
@@ -19,7 +17,7 @@ namespace SubtitleChecker.Domain.Rules.TimingRules
 
         public static int WordCount(string line)
         {
-            var collection = HumanReadSubtitleSpeedRule.Regex.Matches(line);
+            var collection = Regex.Matches(line);
             return collection.Count;
         }
 
@@ -34,7 +32,7 @@ namespace SubtitleChecker.Domain.Rules.TimingRules
                 var wordsPerMinute = (wordCount * 60000) / (subtitle.Duration.TotalMilliseconds);
                 var reduceWords = (int)Math.Ceiling(((wordsPerMinute - MaximumWordsPerMinute) * subtitle.Duration.TotalMilliseconds) / 60000);
                 var extendDuration = Math.Ceiling(1000.0 * (minimumTimeLimit - time));
-                return new RuleValidationResult(RuleDescription, string.Format("Subtitle with '{0}' words per second should be limited to '{1}' words per second. Reduce with {2} words or extend duration of subtitle with {3} milliseconds", Math.Round(wordsPerMinute, 0), MaximumWordsPerMinute, reduceWords, extendDuration), subtitle);
+                return new RuleValidationResult(RuleDescription, string.Format("Subtitle with '{0}' words per minute should be limited to '{1}' words per minute. Reduce with {2} words or extend duration of subtitle with {3} milliseconds", Math.Round(wordsPerMinute, 0), MaximumWordsPerMinute, reduceWords, extendDuration), subtitle);
             }
             return null;
         }

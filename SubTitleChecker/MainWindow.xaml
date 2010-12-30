@@ -1,0 +1,38 @@
+﻿<Window x:Class="SubtitleChecker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" SizeChanged="WindowSizeChanged" Name="SubtitleCheckerMainDialog" ResizeMode="CanResizeWithGrip" d:DesignHeight="358" d:DesignWidth="465" SizeToContent="WidthAndHeight" MinWidth="200" MinHeight="200" Width="640" Height="480">
+    <Grid  Height="480" Width="640" Name="SubtitleCheckerGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="250*" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="63" />
+            <ColumnDefinition Width="280*" />
+            <ColumnDefinition Width="59" />
+            <ColumnDefinition Width="5" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="1" Content="File name:" Padding="5" />
+        <TextBox Grid.Column="2" Margin="3,3,6,3" Name="FileNameTextBox" TextChanged="FileNameTextBoxTextChanged" />
+        <Button Grid.Column="3" Margin="0,3,3,3" Content="Browse..." Click="BrowseButtonClick" />
+        <ListView ItemsSource="{Binding ValidationCollection}"  Grid.Column="1" Grid.Row="1" Name="ValidationOutput" Grid.ColumnSpan="3" Margin="0,0,0,0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Number}" />
+                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Time}" />
+                    <GridViewColumn Header="Severity" DisplayMemberBinding="{Binding Severity}" />
+                    <GridViewColumn Header="Text" DisplayMemberBinding="{Binding Text}" />
+                    <GridViewColumn Header="Violation" DisplayMemberBinding="{Binding Violation}" />
+                    <GridViewColumn Header="Rule" DisplayMemberBinding="{Binding Rule}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StatusBar Grid.Column="0" Grid.Row="3" Name="StatusBar" Grid.ColumnSpan="5" Margin="0,0,0,0" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalAlignment="Top" HorizontalAlignment="Stretch" MinHeight="25" Height="25">
+            <StatusBarItem Content="Ready..." />
+        </StatusBar>
+    </Grid>
+</Window>

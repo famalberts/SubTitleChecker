@@ -37,8 +37,8 @@ namespace SubtitleChecker.Parser
         #region Fields
 
         private State _state = State.BeginHeader;
-        private Stream _stream;
-        private long _origin;
+        private readonly Stream _stream;
+        private readonly long _origin;
 
         #endregion
 
@@ -57,24 +57,25 @@ namespace SubtitleChecker.Parser
 
         public void Parse(Video video)
         {
-            if (video == null) return;
+            if (video == null) throw new InvalidDataException("Not a valid video to parse subtitles to.");
             if (_stream.Position != _origin)
             {
                 _stream.Seek(_origin, SeekOrigin.Begin);
             }
             var reader = new StreamReader(_stream);
             ParseHeader(reader, video);
+            if (_state != State.EndHeader) throw new InvalidDataException("Subtitle does not have a valid subtitle header file.");
             ParseSubtitles(reader, video.Subtitles);
         }
 
-        private SubtitleCollection ParseSubtitles(StreamReader reader, SubtitleCollection subtitleCollection)
+        private void ParseSubtitles(StreamReader reader, SubtitleCollection subtitleCollection)
         {
             var subtitleLines = new List<string>();
             var subtitles = 0;
             Subtitle previousSubtitle = null;
             var startTime = new TimeSpan();
-            bool readNextLine = true;
-            string line = string.Empty;
+            var readNextLine = true;
+            var line = string.Empty;
             while (reader.Peek() >= 0)
             {
                 if (readNextLine) line = reader.ReadLine();
@@ -139,7 +140,7 @@ namespace SubtitleChecker.Parser
 
                 }
             }
-            return subtitleCollection;
+            return;
         }
 
         private bool ParseSubtitleStartTime(List<string> subtitleLines, ref string line, ref TimeSpan startTime)

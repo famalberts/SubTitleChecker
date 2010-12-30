@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SubtitleChecker.Domain
+﻿namespace SubtitleChecker.Domain
 {
     public class Author
     {

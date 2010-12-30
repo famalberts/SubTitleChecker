@@ -41,9 +41,9 @@
             }
             if (isLower)
             {
-                return new RuleValidationResult(RuleDescription, "Text is not mixed upper and lower case. It only contains lower case characters.", subtitle);
+                return new RuleValidationResult(RuleValidationResult.SeverityLevel.Warning, RuleDescription, "Mix upper upper and lower case characters in text. It only contains lower case characters.", subtitle);
             }
-            return isUpper ? new RuleValidationResult(RuleDescription, "Text is not mixed upper and lower case. It only contains upper case characters.", subtitle) : new RuleValidationResult(RuleDescription, "Text is not mixed upper and lower case.", subtitle);
+            return isUpper ? new RuleValidationResult(RuleValidationResult.SeverityLevel.Warning, RuleDescription, "Mix upper upper and lower case characters in text. It only contains upper case characters.", subtitle) : new RuleValidationResult(RuleValidationResult.SeverityLevel.Warning, RuleDescription, "Text is not mixed upper and lower case.", subtitle);
         }
 
         #endregion
